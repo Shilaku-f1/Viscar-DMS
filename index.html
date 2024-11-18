@@ -65,15 +65,16 @@
         return;
       }
 
-      // Make the POST request to the Google Apps Script Web App URL
-      const url = "https://script.google.com/macros/s/AKfycbwstgnYyZ9q6ioX4yYxeFAv1AsLBz1-fDUFxvzkdvQuq_wwQ81TQdX-ztNFakVX4KOo_Q/exec"; // Replace with your Web App URL
+      // URL for the Google Apps Script Web App (with CORS Anywhere proxy)
+      const url = "https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbyrazLPgXiuydL338eARkI8WUVUqywkRKVRYp_0ae80mvkDOJC3hoHJNo58L0sz7dsvWQ/exec"; // Your Google Apps Script URL
+
       const data = {
         action: "login",
         employeeId: employeeId,
         password: password
       };
 
-      // Perform the fetch request to the Apps Script URL
+      // Perform the fetch request to the Apps Script URL through the CORS proxy
       fetch(url, {
         method: "POST",
         headers: {
