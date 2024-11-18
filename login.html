@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    /* Simple styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #errorMessage {
+      color: red;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <input type="text" id="employeeId" placeholder="Employee ID" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button id="loginBtn">Login</button>
+    <div id="errorMessage"></div>
+  </div>
+
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', function() {
+      const employeeId = document.getElementById('employeeId').value;
+      const password = document.getElementById('password').value;
+
+      if (!employeeId || !password) {
+        document.getElementById('errorMessage').innerText = "Please enter both Employee ID and Password.";
+        document.getElementById('errorMessage').style.display = 'block';
+        return;
+      }
+
+      // Make the POST request to the Google Apps Script
+      const url = "https://script.google.com/macros/s/AKfycbx-fn_nwSYlUB0NcgtaPlW0Qi8SdOr0XSLi-O2sICKzrMZpUyuBZHdGYWmiLdXbpgd2rw/exec"; // Replace with your Web App URL
+      const data = {
+        action: "login",
+        employeeId: employeeId,
+        password: password
+      };
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.status === "success") {
+          // Redirect to the dashboard
+          window.location.href = "dashboard.html"; // Change this to your actual dashboard URL
+        } else {
+          document.getElementById('errorMessage').innerText = result.message;
+          document.getElementById('errorMessage').style.display = 'block';
+        }
+      })
+      .catch(error => {
+        document.getElementById('errorMessage').innerText = "An error occurred. Please try again.";
+        document.getElementById('errorMessage').style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>
